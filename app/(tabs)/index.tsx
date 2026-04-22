@@ -3,7 +3,7 @@ import PrimaryButton from '@/components/ui/primary-button';
 import ScreenHeader from '@/components/ui/screen-header';
 import { useApp } from '@/context/app-context';
 import { useThemeContext } from '@/context/theme-context';
-import { todayStr } from '@/utils/habit-stats';
+import { calculateStreak, todayStr } from '@/utils/habit-stats';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
@@ -22,6 +22,8 @@ export default function HabitsScreen() {
   const { colors } = useThemeContext();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
 
   const today = todayStr();
   const weekStart = (() => {
@@ -32,13 +34,23 @@ export default function HabitsScreen() {
   })();
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
+  const hasDateRange = fromDate.length === 10 || toDate.length === 10;
 
   const filteredHabits = habits.filter((h) => {
     const matchesSearch =
       normalizedQuery.length === 0 || h.name.toLowerCase().includes(normalizedQuery);
     const matchesCategory =
       selectedCategoryId === null || h.categoryId === selectedCategoryId;
-    return matchesSearch && matchesCategory;
+    const matchesDateRange = (() => {
+      if (!hasDateRange) return true;
+      const habitLogs = logs.filter((l) => l.habitId === h.id && l.completed === 1);
+      return habitLogs.some((l) => {
+        const afterFrom = !fromDate || l.date >= fromDate;
+        const beforeTo = !toDate || l.date <= toDate;
+        return afterFrom && beforeTo;
+      });
+    })();
+    return matchesSearch && matchesCategory && matchesDateRange;
   });
 
   return (
@@ -65,6 +77,40 @@ export default function HabitsScreen() {
         ]}
         accessibilityLabel="Search habits"
       />
+
+      {/* Date range filter */}
+      <View style={styles.dateRow}>
+        <TextInput
+          value={fromDate}
+          onChangeText={setFromDate}
+          placeholder="From YYYY-MM-DD"
+          placeholderTextColor={colors.textSecondary}
+          style={[
+            styles.dateInput,
+            {
+              backgroundColor: colors.inputBg,
+              borderColor: colors.searchBorder,
+              color: colors.inputText,
+            },
+          ]}
+          accessibilityLabel="Filter from date"
+        />
+        <TextInput
+          value={toDate}
+          onChangeText={setToDate}
+          placeholder="To YYYY-MM-DD"
+          placeholderTextColor={colors.textSecondary}
+          style={[
+            styles.dateInput,
+            {
+              backgroundColor: colors.inputBg,
+              borderColor: colors.searchBorder,
+              color: colors.inputText,
+            },
+          ]}
+          accessibilityLabel="Filter to date"
+        />
+      </View>
 
       <ScrollView
         horizontal
@@ -141,12 +187,14 @@ export default function HabitsScreen() {
             const weekCount = logs.filter(
               (l) => l.habitId === habit.id && l.date >= weekStart && l.date <= today && l.completed === 1
             ).length;
+            const streak = calculateStreak(habit.id, logs);
             return (
               <HabitCard
                 key={habit.id}
                 habit={habit}
                 category={category}
                 weekCount={weekCount}
+                streak={streak}
               />
             );
           })
@@ -169,6 +217,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 15,
+  },
+  dateRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 8,
+  },
+  dateInput: {
+    borderRadius: 10,
+    borderWidth: 1,
+    flex: 1,
+    fontSize: 13,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
   },
   filterScroll: {
     marginTop: 10,

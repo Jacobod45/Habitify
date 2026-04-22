@@ -1,4 +1,5 @@
 import { Category, Habit } from '@/context/app-context';
+import { useThemeContext } from '@/context/theme-context';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -6,10 +7,12 @@ type Props = {
   habit: Habit;
   category: Category | undefined;
   weekCount: number;
+  streak: number;
 };
 
-export default function HabitCard({ habit, category, weekCount }: Props) {
+export default function HabitCard({ habit, category, weekCount, streak }: Props) {
   const router = useRouter();
+  const { colors } = useThemeContext();
 
   return (
     <Pressable
@@ -18,12 +21,25 @@ export default function HabitCard({ habit, category, weekCount }: Props) {
       onPress={() =>
         router.push({ pathname: '/habit/[id]', params: { id: habit.id.toString() } })
       }
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+      style={({ pressed }) => [
+        styles.card,
+        { backgroundColor: colors.card, borderColor: colors.border },
+        pressed && styles.cardPressed,
+      ]}
     >
-      <Text style={styles.name}>{habit.name}</Text>
+      <View style={styles.nameRow}>
+        <Text style={[styles.name, { color: colors.text }]}>{habit.name}</Text>
+        {streak > 0 && (
+          <View style={[styles.streakBadge, { backgroundColor: colors.streakBg }]}>
+            <Text style={[styles.streakText, { color: colors.streakText }]}>
+              🔥 {streak}
+            </Text>
+          </View>
+        )}
+      </View>
 
       {habit.description ? (
-        <Text style={styles.description} numberOfLines={1}>
+        <Text style={[styles.description, { color: colors.textSecondary }]} numberOfLines={1}>
           {habit.description}
         </Text>
       ) : null}
@@ -40,7 +56,7 @@ export default function HabitCard({ habit, category, weekCount }: Props) {
             <Text style={[styles.catName, { color: category.color }]}>{category.name}</Text>
           </View>
         ) : null}
-        <Text style={styles.weekCount}>{weekCount}× this week</Text>
+        <Text style={[styles.weekCount, { color: colors.textSecondary }]}>{weekCount}× this week</Text>
       </View>
     </Pressable>
   );
@@ -48,8 +64,6 @@ export default function HabitCard({ habit, category, weekCount }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#E5E7EB',
     borderRadius: 14,
     borderWidth: 1,
     marginBottom: 12,
@@ -58,13 +72,27 @@ const styles = StyleSheet.create({
   cardPressed: {
     opacity: 0.88,
   },
+  nameRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   name: {
-    color: '#111827',
+    flex: 1,
     fontSize: 18,
+    fontWeight: '700',
+    marginRight: 8,
+  },
+  streakBadge: {
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  streakText: {
+    fontSize: 12,
     fontWeight: '700',
   },
   description: {
-    color: '#6B7280',
     fontSize: 13,
     marginTop: 4,
   },
@@ -91,7 +119,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   weekCount: {
-    color: '#6B7280',
     fontSize: 12,
   },
 });

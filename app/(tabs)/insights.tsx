@@ -1,13 +1,33 @@
 import BarChart from '@/components/BarChart';
 import { useApp } from '@/context/app-context';
 import { useThemeContext } from '@/context/theme-context';
+import { fetchDailyQuote, Quote } from '@/services/quotes-api';
 import { getMonthStart, getWeekStart, todayStr } from '@/utils/habit-stats';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function InsightsScreen() {
   const { habits, logs, categories } = useApp();
   const { colors } = useThemeContext();
+
+  const [quote, setQuote] = useState<Quote | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(true);
+  const [quoteError, setQuoteError] = useState(false);
+
+  useEffect(() => {
+    setQuoteLoading(true);
+    setQuoteError(false);
+    fetchDailyQuote()
+      .then((q) => {
+        setQuote(q);
+        setQuoteLoading(false);
+      })
+      .catch(() => {
+        setQuoteError(true);
+        setQuoteLoading(false);
+      });
+  }, []);
 
   const today = todayStr();
   const weekStart = getWeekStart();
@@ -39,6 +59,30 @@ export default function InsightsScreen() {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={[styles.title, { color: colors.text }]}>📊 Insights</Text>
+
+        {/* Daily Motivational Quote */}
+        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>💡 Daily Motivation</Text>
+          {quoteLoading ? (
+            <ActivityIndicator
+              size="small"
+              color={colors.primary}
+              accessibilityLabel="Loading quote"
+              style={styles.loader}
+            />
+          ) : quoteError ? (
+            <Text style={[styles.errorText, { color: colors.danger }]}>
+              Could not load quote. Check your connection.
+            </Text>
+          ) : quote ? (
+            <View>
+              <Text style={[styles.quoteText, { color: colors.text }]}>"{quote.quote}"</Text>
+              <Text style={[styles.quoteAuthor, { color: colors.textSecondary }]}>
+                — {quote.author}
+              </Text>
+            </View>
+          ) : null}
+        </View>
 
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Last 7 Days</Text>
@@ -126,6 +170,25 @@ const styles = StyleSheet.create({
   sectionSub: {
     fontSize: 13,
     marginBottom: 14,
+  },
+  loader: {
+    marginVertical: 12,
+  },
+  errorText: {
+    fontSize: 13,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  quoteText: {
+    fontSize: 15,
+    fontStyle: 'italic',
+    lineHeight: 22,
+    marginTop: 8,
+  },
+  quoteAuthor: {
+    fontSize: 13,
+    marginTop: 8,
+    textAlign: 'right',
   },
   statsRow: {
     flexDirection: 'row',

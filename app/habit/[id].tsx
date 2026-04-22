@@ -4,7 +4,7 @@ import { useApp } from '@/context/app-context';
 import { useThemeContext } from '@/context/theme-context';
 import { db } from '@/db/client';
 import { habitLogs, habits as habitsTable } from '@/db/schema';
-import { todayStr } from '@/utils/habit-stats';
+import { calculateStreak, todayStr } from '@/utils/habit-stats';
 import { eq } from 'drizzle-orm';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -29,6 +29,7 @@ export default function HabitDetailScreen() {
   const loggedToday = logs.some(
     (l) => l.habitId === habit.id && l.date === today && l.completed === 1
   );
+  const streak = calculateStreak(habit.id, logs);
 
   const quickLog = async () => {
     await db.insert(habitLogs).values({
@@ -64,6 +65,14 @@ export default function HabitDetailScreen() {
           >
             <Text style={styles.categoryIcon}>{category.icon}</Text>
             <Text style={[styles.categoryName, { color: category.color }]}>{category.name}</Text>
+          </View>
+        )}
+
+        {streak > 0 && (
+          <View style={[styles.streakBadge, { backgroundColor: colors.streakBg }]}>
+            <Text style={[styles.streakText, { color: colors.streakText }]}>
+              🔥 {streak} day{streak === 1 ? '' : 's'} streak
+            </Text>
           </View>
         )}
 
@@ -180,6 +189,17 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
     marginBottom: 12,
+  },
+  streakBadge: {
+    alignSelf: 'flex-start',
+    borderRadius: 999,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  streakText: {
+    fontSize: 14,
+    fontWeight: '700',
   },
   emptyText: {
     fontSize: 15,

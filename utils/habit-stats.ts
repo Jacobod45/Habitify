@@ -1,5 +1,29 @@
 import { HabitLog, Target } from '@/context/app-context';
 
+export function calculateStreak(habitId: number, logs: HabitLog[]): number {
+  const completedDates = new Set(
+    logs.filter((l) => l.habitId === habitId && l.completed === 1).map((l) => l.date)
+  );
+
+  const today = new Date();
+  const todayKey = today.toISOString().split('T')[0];
+
+  const start = new Date(today);
+  if (!completedDates.has(todayKey)) {
+    start.setDate(start.getDate() - 1);
+  }
+
+  let streak = 0;
+  const cursor = new Date(start);
+  while (true) {
+    const key = cursor.toISOString().split('T')[0];
+    if (!completedDates.has(key)) break;
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
 export function calculateProgress(target: Target, logs: HabitLog[]): number {
   const now = new Date();
   let startDate: Date;
