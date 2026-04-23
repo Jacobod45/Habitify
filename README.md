@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# Habitify — IS4447 Mobile Application Development
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**GitHub Repository:** https://github.com/Jacobod45/Habitify
 
-## Get started
+---
 
-1. Install dependencies
+## Expo Link / QR Code
 
-   ```bash
-   npm install
-   ```
+| Platform | Link |
+|----------|------|
+| iOS | https://expo.dev/preview/update?message=Final+submission&updateRuntimeVersion=1.0.0&createdAt=2026-04-23T19%3A08%3A51.397Z&slug=exp&projectId=c74287a9-b2cb-4abe-a402-cf5c1d5ee817&group=d566939f-d08b-4ea5-9f7c-812750237ec3 |
+| Android | https://expo.dev/preview/update?message=Final+submission&updateRuntimeVersion=1.0.0&createdAt=2026-04-23T19%3A07%3A36.272Z&slug=exp&projectId=c74287a9-b2cb-4abe-a402-cf5c1d5ee817&group=ac810ae0-6c8b-4513-a321-ef23156a64a8 |
 
-2. Start the app
+To open on your phone: install **Expo Go** from the App Store or Google Play, then scan the QR code found at either link above.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## App Details
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **App Name:** Habitify
+- **Option:** A — Habit Tracker
+- **Student Number:** [your student number]
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Habitify is a mobile habit tracking application that allows users to define habits, log activity over time, set weekly and monthly targets, and view progress through charts and insights.
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm
+- Expo Go installed on your phone (for testing)
+
+### Install Dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Run the App
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Scan the QR code displayed in the terminal with Expo Go on your phone.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Demo Account
 
-## Join the community
+A pre-seeded demo account is available for immediate testing:
 
-Join our community of developers creating universal apps.
+- **Email:** demo@example.com
+- **Password:** demo1234
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Environment Variables
+
+Create a `.env` file in the project root (already gitignored):
+
+```
+EXPO_PUBLIC_NINJA_API_KEY=your_api_ninjas_key_here
+```
+
+Get a free API key at https://api-ninjas.com to enable the daily motivational quote feature. The app works without it and will display a fallback quote.
+
+---
+
+## Features
+
+- Register, log in, log out, and delete account
+- Create, edit, and delete habits with categories
+- Log habit activity with date, count, and notes
+- Set weekly and monthly goals with progress tracking
+- Search and filter habits by text, category, and date range
+- Insights with bar charts (daily completions, per-habit breakdown)
+- Streak tracking for consecutive days
+- Light and dark mode with persistent preference
+- Daily reminder notifications (mobile only)
+- Export habit logs as CSV
+- Daily motivational quote via external API
+- Full offline storage using SQLite via Drizzle ORM
