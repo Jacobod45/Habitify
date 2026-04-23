@@ -8,8 +8,10 @@ import { habitLogs } from '@/db/schema';
 import { todayStr } from '@/utils/habit-stats';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function LogActivityScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -19,16 +21,29 @@ export default function LogActivityScreen() {
   const [date, setDate] = useState(todayStr());
   const [count, setCount] = useState('1');
   const [notes, setNotes] = useState('');
+  const [error, setError] = useState('');
 
   const habit = habits.find((h) => h.id === Number(id));
   if (!habit) return null;
 
   const save = async () => {
+    setError('');
+
+    if (!DATE_REGEX.test(date.trim())) {
+      setError('Date must be in YYYY-MM-DD format (e.g. 2026-04-23)');
+      return;
+    }
+
     const parsedCount = parseInt(count, 10);
+    if (isNaN(parsedCount) || parsedCount < 1) {
+      setError('Count must be a number of at least 1');
+      return;
+    }
+
     await db.insert(habitLogs).values({
       habitId: habit.id,
       date: date.trim(),
-      count: isNaN(parsedCount) || parsedCount < 1 ? 1 : parsedCount,
+      count: parsedCount,
       completed: 1,
       notes: notes.trim() || null,
       createdAt: new Date().toISOString(),
@@ -46,14 +61,15 @@ export default function LogActivityScreen() {
           <FormField
             label="Date (YYYY-MM-DD)"
             value={date}
-            onChangeText={setDate}
-            placeholder="2026-04-21"
+            onChangeText={(t) => { setDate(t); setError(''); }}
+            placeholder="2026-04-23"
           />
           <FormField
             label="Count"
             value={count}
-            onChangeText={setCount}
+            onChangeText={(t) => { setCount(t); setError(''); }}
             keyboardType="numeric"
+            placeholder="1"
           />
           <FormField
             label="Notes (optional)"
@@ -62,6 +78,15 @@ export default function LogActivityScreen() {
             multiline
           />
         </View>
+
+        {error ? (
+          <Text
+            style={[styles.error, { color: colors.danger }]}
+            accessibilityRole="alert"
+          >
+            {error}
+          </Text>
+        ) : null}
 
         <PrimaryButton label="Save Log" onPress={save} />
         <View style={styles.cancelBtn}>
@@ -82,6 +107,10 @@ const styles = StyleSheet.create({
   },
   form: {
     marginBottom: 6,
+  },
+  error: {
+    fontSize: 14,
+    marginBottom: 12,
   },
   cancelBtn: {
     marginTop: 10,

@@ -35,8 +35,9 @@ export default function TargetsScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {targets.length === 0 ? (
           <View style={styles.emptyState}>
+            <Text style={[styles.emptyHeading, { color: colors.text }]}>No goals yet</Text>
             <Text style={[styles.emptyText, { color: colors.empty }]}>
-              No goals yet. Set a weekly or monthly target to stay on track.
+              Tap "+ Add" to set a weekly or monthly target and track your progress.
             </Text>
           </View>
         ) : (
@@ -174,10 +175,18 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     alignItems: 'center',
+    paddingHorizontal: 24,
     paddingTop: 60,
   },
+  emptyHeading: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
   emptyText: {
-    fontSize: 16,
+    fontSize: 14,
+    lineHeight: 20,
     textAlign: 'center',
   },
 });

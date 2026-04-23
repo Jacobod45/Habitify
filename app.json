@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-lab",
-    "slug": "react-native-lab",
+    "name": "Habitify",
+    "slug": "habitify",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

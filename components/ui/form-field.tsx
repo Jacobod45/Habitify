@@ -1,3 +1,4 @@
+import { useThemeContext } from '@/context/theme-context';
 import { KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from 'react-native';
 
 type Props = {
@@ -19,18 +20,29 @@ export default function FormField({
   multiline = false,
   keyboardType = 'default',
 }: Props) {
+  const { colors } = useThemeContext();
+
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
       <TextInput
         accessibilityLabel={label}
         placeholder={placeholder ?? label}
+        placeholderTextColor={colors.textSecondary}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
         multiline={multiline}
         keyboardType={keyboardType}
-        style={[styles.input, multiline && styles.multiline]}
+        style={[
+          styles.input,
+          multiline && styles.multiline,
+          {
+            backgroundColor: colors.inputBg,
+            borderColor: colors.inputBorder,
+            color: colors.inputText,
+          },
+        ]}
       />
     </View>
   );
@@ -41,14 +53,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   label: {
-    color: '#334155',
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 6,
   },
   input: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#CBD5E1',
     borderRadius: 4,
     borderWidth: 1,
     fontSize: 15,

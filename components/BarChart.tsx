@@ -9,10 +9,16 @@ type BarData = {
 type Props = {
   data: BarData[];
   barColor?: string;
+  labelColor?: string;
   height?: number;
 };
 
-export default function BarChart({ data, barColor = '#0F766E', height = 130 }: Props) {
+export default function BarChart({
+  data,
+  barColor = '#0F766E',
+  labelColor = '#6B7280',
+  height = 130,
+}: Props) {
   const max = Math.max(...data.map((d) => d.value), 1);
   const barAreaHeight = height - 20;
 
@@ -24,7 +30,7 @@ export default function BarChart({ data, barColor = '#0F766E', height = 130 }: P
           return (
             <View key={i} style={styles.barGroup}>
               {item.value > 0 && (
-                <Text style={styles.valueLabel}>{item.value}</Text>
+                <Text style={[styles.valueLabel, { color: labelColor }]}>{item.value}</Text>
               )}
               <View
                 style={[
@@ -41,7 +47,7 @@ export default function BarChart({ data, barColor = '#0F766E', height = 130 }: P
       </View>
       <View style={styles.labelRow}>
         {data.map((item, i) => (
-          <Text key={i} style={styles.label}>
+          <Text key={i} style={[styles.label, { color: labelColor }]}>
             {item.label}
           </Text>
         ))}
@@ -66,12 +72,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   bar: {
-    borderRadius: 4,
-    width: '80%',
+    borderRadius: 2,
     minHeight: 2,
+    width: '80%',
   },
   valueLabel: {
-    color: '#6B7280',
     fontSize: 10,
     marginBottom: 2,
   },
@@ -81,7 +86,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   label: {
-    color: '#6B7280',
     flex: 1,
     fontSize: 11,
     textAlign: 'center',

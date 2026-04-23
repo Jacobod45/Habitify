@@ -32,7 +32,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenHeader title="Welcome back" subtitle="Log in to Habitify" />
+        <ScreenHeader title="Habitify" subtitle="Log in to your account" />
 
         <View style={styles.form}>
           <FormField

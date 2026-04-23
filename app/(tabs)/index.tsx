@@ -174,10 +174,13 @@ export default function HabitsScreen() {
       >
         {filteredHabits.length === 0 ? (
           <View style={styles.emptyState}>
+            <Text style={[styles.emptyHeading, { color: colors.text }]}>
+              {habits.length === 0 ? 'No habits yet' : 'No results found'}
+            </Text>
             <Text style={[styles.emptyText, { color: colors.empty }]}>
               {habits.length === 0
-                ? 'No habits yet. Add your first one!'
-                : 'No habits match your search.'}
+                ? 'Tap "+ Add Habit" to create your first habit and start tracking.'
+                : 'Try adjusting your search or filters.'}
             </Text>
           </View>
         ) : (
@@ -261,14 +264,18 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     alignItems: 'center',
+    paddingHorizontal: 24,
     paddingTop: 48,
   },
-  emptyIcon: {
-    fontSize: 40,
-    marginBottom: 12,
+  emptyHeading: {
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 8,
+    textAlign: 'center',
   },
   emptyText: {
-    fontSize: 16,
+    fontSize: 14,
+    lineHeight: 20,
     textAlign: 'center',
   },
 });

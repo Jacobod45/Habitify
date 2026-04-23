@@ -92,7 +92,7 @@ export default function InsightsScreen() {
           {logs.length === 0 ? (
             <Text style={[styles.emptyText, { color: colors.empty }]}>No data yet</Text>
           ) : (
-            <BarChart data={barData} barColor={colors.primary} />
+            <BarChart data={barData} barColor={colors.primary} labelColor={colors.textSecondary} />
           )}
         </View>
 
@@ -119,6 +119,27 @@ export default function InsightsScreen() {
           </View>
         </View>
 
+        {/* Per-habit this week bar chart */}
+        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>This Week by Habit</Text>
+          <Text style={[styles.sectionSub, { color: colors.textSecondary }]}>
+            Completions per habit since Monday
+          </Text>
+          {habits.length === 0 ? (
+            <Text style={[styles.emptyText, { color: colors.empty }]}>No habits yet</Text>
+          ) : (
+            <BarChart
+              data={habits.map((h) => ({
+                label: h.name.length > 6 ? h.name.slice(0, 6) + '…' : h.name,
+                value: weekLogs.filter((l) => l.habitId === h.id).length,
+              }))}
+              barColor={colors.primary}
+              labelColor={colors.textSecondary}
+              height={110}
+            />
+          )}
+        </View>
+
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Monthly Summary</Text>
           {categories.map((cat) => {
@@ -128,9 +149,8 @@ export default function InsightsScreen() {
             );
             return (
               <View key={cat.id} style={styles.catRow}>
-                <Text style={styles.catIcon}>{cat.icon}</Text>
-                <Text style={[styles.catName, { color: colors.text }]}>{cat.name}</Text>
-                <Text style={[styles.catCount, { color: colors.primary }]}>{catLogs.length}×</Text>
+                <Text style={[styles.catName, { color: colors.text }]}>{cat.icon}  {cat.name}</Text>
+                <Text style={[styles.catCount, { color: colors.primary }]}>{catLogs.length}x</Text>
               </View>
             );
           })}
