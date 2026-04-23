@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   colorSwatch: {
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: 4,
     height: 40,
     justifyContent: 'center',
     width: 40,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   iconChip: {
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 2,
     padding: 8,
   },

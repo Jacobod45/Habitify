@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   habitChip: {
-    borderRadius: 999,
+    borderRadius: 4,
     borderWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   typeChip: {
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 1,
     flex: 1,
     alignItems: 'center',

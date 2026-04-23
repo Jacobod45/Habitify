@@ -71,7 +71,7 @@ export default function HabitDetailScreen() {
         {streak > 0 && (
           <View style={[styles.streakBadge, { backgroundColor: colors.streakBg }]}>
             <Text style={[styles.streakText, { color: colors.streakText }]}>
-              🔥 {streak} day{streak === 1 ? '' : 's'} streak
+              {streak} day{streak === 1 ? '' : 's'} streak
             </Text>
           </View>
         )}
@@ -85,7 +85,7 @@ export default function HabitDetailScreen() {
         <View style={styles.actions}>
           {loggedToday ? (
             <View style={styles.loggedBadge}>
-              <Text style={styles.loggedText}>✅ Logged today</Text>
+              <Text style={styles.loggedText}>Logged today</Text>
             </View>
           ) : (
             <PrimaryButton label="✓ Log Today" onPress={quickLog} />
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   categoryBadge: {
     alignSelf: 'flex-start',
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: 4,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 6,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#DCFCE7',
     borderColor: '#86EFAC',
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 1,
     paddingHorizontal: 14,
     paddingVertical: 11,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   },
   streakBadge: {
     alignSelf: 'flex-start',
-    borderRadius: 999,
+    borderRadius: 4,
     marginBottom: 12,
     paddingHorizontal: 12,
     paddingVertical: 6,

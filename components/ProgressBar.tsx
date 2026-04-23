@@ -28,13 +28,13 @@ export default function ProgressBar({ current, goal, color = '#0F766E' }: Props)
 const styles = StyleSheet.create({
   track: {
     backgroundColor: '#E5E7EB',
-    borderRadius: 999,
+    borderRadius: 2,
     height: 10,
     overflow: 'hidden',
     width: '100%',
   },
   fill: {
-    borderRadius: 999,
+    borderRadius: 2,
     height: '100%',
   },
 });

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#FFFFFF',
     borderColor: '#CBD5E1',
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 1,
     fontSize: 15,
     paddingHorizontal: 12,

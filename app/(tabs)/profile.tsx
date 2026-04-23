@@ -129,7 +129,7 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: colors.text }]}>👤 Profile</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Profile</Text>
 
         {/* User info */}
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
@@ -152,7 +152,7 @@ export default function ProfileScreen() {
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Appearance</Text>
           <View style={styles.row}>
             <Text style={[styles.rowLabel, { color: colors.text }]}>
-              {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+              {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
             </Text>
             <Switch
               value={theme === 'dark'}
@@ -167,7 +167,7 @@ export default function ProfileScreen() {
         {/* Daily Reminder */}
         {Platform.OS !== 'web' && (
           <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <Text style={[styles.sectionTitle, { color: colors.text }]}>🔔 Daily Reminder</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Daily Reminder</Text>
             <View style={styles.row}>
               <Text style={[styles.rowLabel, { color: colors.text }]}>Enable reminder</Text>
               <Switch
@@ -225,7 +225,7 @@ export default function ProfileScreen() {
 
         {/* Data Export */}
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>📤 Export Data</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Export Data</Text>
           <Text style={[styles.exportHint, { color: colors.textSecondary }]}>
             Export all your habit logs as a CSV file.
           </Text>
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   card: {
-    borderRadius: 14,
+    borderRadius: 6,
     borderWidth: 1,
     marginBottom: 14,
     padding: 16,

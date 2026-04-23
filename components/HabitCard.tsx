@@ -32,7 +32,7 @@ export default function HabitCard({ habit, category, weekCount, streak }: Props)
         {streak > 0 && (
           <View style={[styles.streakBadge, { backgroundColor: colors.streakBg }]}>
             <Text style={[styles.streakText, { color: colors.streakText }]}>
-              🔥 {streak}
+              {streak} day streak
             </Text>
           </View>
         )}
@@ -64,7 +64,7 @@ export default function HabitCard({ habit, category, weekCount, streak }: Props)
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 14,
+    borderRadius: 6,
     borderWidth: 1,
     marginBottom: 12,
     padding: 14,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   streakBadge: {
-    borderRadius: 999,
+    borderRadius: 4,
     paddingHorizontal: 8,
     paddingVertical: 3,
   },
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   catBadge: {
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: 4,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 4,

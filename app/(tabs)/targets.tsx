@@ -24,7 +24,7 @@ export default function TargetsScreen() {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <View style={styles.headerRow}>
         <View>
-          <Text style={[styles.title, { color: colors.text }]}>🎯 Goals</Text>
+          <Text style={[styles.title, { color: colors.text }]}>Goals</Text>
           <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
             {targets.length} active goal{targets.length === 1 ? '' : 's'}
           </Text>
@@ -35,7 +35,6 @@ export default function TargetsScreen() {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         {targets.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>🎯</Text>
             <Text style={[styles.emptyText, { color: colors.empty }]}>
               No goals yet. Set a weekly or monthly target to stay on track.
             </Text>
@@ -56,10 +55,10 @@ export default function TargetsScreen() {
               : colors.danger;
 
             const statusLabel = isExceeded
-              ? '✅ Target met!'
+              ? 'Target met'
               : isClose
-              ? '⚠️ Almost there'
-              : '❌ Behind target';
+              ? 'Almost there'
+              : 'Behind target';
 
             return (
               <View
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   card: {
-    borderRadius: 14,
+    borderRadius: 6,
     borderWidth: 1,
     marginBottom: 14,
     padding: 16,
@@ -176,10 +175,6 @@ const styles = StyleSheet.create({
   emptyState: {
     alignItems: 'center',
     paddingTop: 60,
-  },
-  emptyIcon: {
-    fontSize: 40,
-    marginBottom: 12,
   },
   emptyText: {
     fontSize: 16,

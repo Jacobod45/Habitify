@@ -55,7 +55,7 @@ export default function HabitsScreen() {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
-      <ScreenHeader title="🌱 My Habits" subtitle={`${habits.length} habits tracked`} />
+      <ScreenHeader title="My Habits" subtitle={`${habits.length} habits tracked`} />
 
       <PrimaryButton
         label="+ Add Habit"
@@ -174,7 +174,6 @@ export default function HabitsScreen() {
       >
         {filteredHabits.length === 0 ? (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>🌿</Text>
             <Text style={[styles.emptyText, { color: colors.empty }]}>
               {habits.length === 0
                 ? 'No habits yet. Add your first one!'
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   searchInput: {
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 1,
     marginTop: 14,
     paddingHorizontal: 12,
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   dateInput: {
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 1,
     flex: 1,
     fontSize: 13,
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
   },
   filterBtn: {
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: 4,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 4,

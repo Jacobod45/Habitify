@@ -58,11 +58,11 @@ export default function InsightsScreen() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={[styles.title, { color: colors.text }]}>📊 Insights</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Insights</Text>
 
         {/* Daily Motivational Quote */}
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
-          <Text style={[styles.sectionTitle, { color: colors.text }]}>💡 Daily Motivation</Text>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Daily Motivation</Text>
           {quoteLoading ? (
             <ActivityIndicator
               size="small"
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   card: {
-    borderRadius: 14,
+    borderRadius: 6,
     borderWidth: 1,
     marginBottom: 14,
     padding: 16,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   statCard: {
     alignItems: 'center',
-    borderRadius: 14,
+    borderRadius: 6,
     borderWidth: 1,
     flex: 1,
     padding: 14,

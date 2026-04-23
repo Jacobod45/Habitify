@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
   catChip: {
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: 4,
     borderWidth: 2,
     flexDirection: 'row',
     gap: 6,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   noCatBox: {
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 4,
     borderWidth: 1,
     borderStyle: 'dashed',
     marginBottom: 16,

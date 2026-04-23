@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   catChip: {
     alignItems: 'center',
-    borderRadius: 999,
+    borderRadius: 4,
     borderWidth: 2,
     flexDirection: 'row',
     gap: 6,

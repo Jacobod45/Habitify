@@ -24,7 +24,7 @@ export async function scheduleHabitReminder(hour: number, minute: number): Promi
   await Notifications.cancelAllScheduledNotificationsAsync();
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: '🌱 Time to log your habits!',
+      title: 'Time to log your habits!',
       body: 'Keep your streak going — log your habits for today.',
     },
     trigger: {

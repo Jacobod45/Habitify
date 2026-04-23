@@ -32,11 +32,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.logoRow}>
-          <Text style={styles.logo}>🌱</Text>
-        </View>
-
-        <ScreenHeader title="Welcome back" subtitle="Log in to Habit Tracker" />
+        <ScreenHeader title="Welcome back" subtitle="Log in to Habitify" />
 
         <View style={styles.form}>
           <FormField
@@ -87,14 +83,6 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: 24,
   },
-  logoRow: {
-    alignItems: 'center',
-    marginBottom: 8,
-    marginTop: 24,
-  },
-  logo: {
-    fontSize: 56,
-  },
   form: {
     marginBottom: 6,
   },
@@ -105,7 +93,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   hint: {
-    borderRadius: 10,
+    borderRadius: 4,
     marginTop: 12,
     padding: 12,
   },

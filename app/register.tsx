@@ -37,10 +37,6 @@ export default function RegisterScreen() {
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.safeArea }]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.logoRow}>
-          <Text style={styles.logo}>🌱</Text>
-        </View>
-
         <ScreenHeader title="Create account" subtitle="Start tracking your habits today" />
 
         <View style={styles.form}>
@@ -89,14 +85,6 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: 24,
-  },
-  logoRow: {
-    alignItems: 'center',
-    marginBottom: 8,
-    marginTop: 24,
-  },
-  logo: {
-    fontSize: 56,
   },
   form: {
     marginBottom: 6,
