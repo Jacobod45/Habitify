@@ -2,7 +2,6 @@ import { AppProvider } from '@/context/app-context';
 import { AuthProvider, useAuth } from '@/context/auth-context';
 import { ThemeProvider } from '@/context/theme-context';
 import { seedIfEmpty } from '@/db/seed';
-import { requestNotificationPermissions } from '@/services/notifications';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
@@ -36,7 +35,6 @@ function RootNavigator() {
 function AppProviderWithSeed({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     void seedIfEmpty();
-    void requestNotificationPermissions();
   }, []);
 
   return <AppProvider>{children}</AppProvider>;

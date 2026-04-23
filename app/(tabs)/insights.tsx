@@ -1,15 +1,22 @@
 import BarChart from '@/components/BarChart';
+import ProgressBar from '@/components/ProgressBar';
+import PrimaryButton from '@/components/ui/primary-button';
 import { useApp } from '@/context/app-context';
 import { useThemeContext } from '@/context/theme-context';
+import { db } from '@/db/client';
+import { targets as targetsTable } from '@/db/schema';
 import { fetchDailyQuote, Quote } from '@/services/quotes-api';
-import { getMonthStart, getWeekStart, todayStr } from '@/utils/habit-stats';
+import { calculateProgress, getMonthStart, getWeekStart, todayStr } from '@/utils/habit-stats';
+import { eq } from 'drizzle-orm';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function InsightsScreen() {
-  const { habits, logs, categories } = useApp();
+  const { habits, logs, categories, targets, refreshTargets } = useApp();
   const { colors } = useThemeContext();
+  const router = useRouter();
 
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(true);
@@ -140,6 +147,60 @@ export default function InsightsScreen() {
           )}
         </View>
 
+        {/* Goals / Targets */}
+        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View style={styles.goalHeader}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>Goals</Text>
+            <PrimaryButton
+              label="+ Add Goal"
+              compact
+              onPress={() => router.push('/target/add')}
+            />
+          </View>
+          {targets.length === 0 ? (
+            <Text style={[styles.emptyText, { color: colors.empty }]}>
+              No goals yet. Tap "+ Add Goal" to set a target.
+            </Text>
+          ) : (
+            targets.map((target) => {
+              const current = calculateProgress(target, logs);
+              const progress = Math.min(current / target.goalValue, 1);
+              const habit = habits.find((h) => h.id === target.habitId);
+              const label = habit ? habit.name : 'All habits';
+              const isExceeded = current >= target.goalValue;
+              const isClose = progress >= 0.75 && !isExceeded;
+              const statusColor = isExceeded ? colors.success : isClose ? '#F59E0B' : colors.danger;
+              const statusLabel = isExceeded ? 'Target met' : isClose ? 'Almost there' : 'Behind target';
+
+              return (
+                <View key={target.id} style={[styles.goalCard, { borderColor: colors.border }]}>
+                  <View style={styles.goalRow}>
+                    <View style={styles.goalInfo}>
+                      <Text style={[styles.goalLabel, { color: colors.text }]}>{label}</Text>
+                      <Text style={[styles.goalType, { color: colors.textSecondary }]}>
+                        {target.type === 'weekly' ? 'Weekly' : 'Monthly'} — {current}/{target.goalValue}
+                      </Text>
+                    </View>
+                    <View style={styles.goalActions}>
+                      <Text style={[styles.statusLabel, { color: statusColor }]}>{statusLabel}</Text>
+                      <PrimaryButton
+                        label="Delete"
+                        variant="danger"
+                        compact
+                        onPress={async () => {
+                          await db.delete(targetsTable).where(eq(targetsTable.id, target.id));
+                          await refreshTargets();
+                        }}
+                      />
+                    </View>
+                  </View>
+                  <ProgressBar current={current} goal={target.goalValue} color={colors.primary} />
+                </View>
+              );
+            })
+          )}
+        </View>
+
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>Monthly Summary</Text>
           {categories.map((cat) => {
@@ -252,5 +313,41 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginVertical: 8,
     textAlign: 'center',
+  },
+  goalHeader: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  goalCard: {
+    borderTopWidth: 1,
+    marginTop: 8,
+    paddingTop: 12,
+  },
+  goalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  goalInfo: {
+    flex: 1,
+    marginRight: 8,
+  },
+  goalLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  goalType: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  goalActions: {
+    alignItems: 'flex-end',
+    gap: 4,
+  },
+  statusLabel: {
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
